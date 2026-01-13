@@ -1,26 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; // 1. Added useState
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { isAuthenticated } from "../utils/auth";
 import { Link } from 'react-router-dom';
-import { Eye, EyeOff } from 'lucide-react';
-
+import { Eye, EyeOff } from 'lucide-react'; // 2. Added Icons
+import { login } from '../api/auth';
 const SignInPage = () => {
+  const navigate = useNavigate();
+  // 3. State to track if password is shown or hidden
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+  if (isAuthenticated()) {
+    navigate("/");
+  }
+}, [navigate]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#0e0e0e] text-white px-4 font-sans">
       <div className="w-full max-w-md p-8 bg-[#1e1f20] border border-[#3c4043] rounded-2xl shadow-xl">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-semibold mb-2">Sign in to Larc AI</h1>
-          <p className="text-[#9aa0a6] text-sm">Enter your credentials to continue</p>
+          <p className="text-[#9aa0a6] text-sm">Use your Google Account to continue</p>
         </div>
-
-        <form className="space-y-4">
+        <form className="space-y-4"
+          onSubmit={async (e) => {
+            e.preventDefault()
+            try {
+              const res = await login({ email, password })
+              console.log("login success", res);
+              localStorage.setItem("access", res.access);
+              localStorage.setItem("refresh", res.refresh);
+              window.location.href="/";
+            } catch (error) {
+              setError(error.error || "Invalid cred..")
+            }
+          }}
+        >
           {/* Email Field */}
           <div className="text-left">
             <label className="block text-xs font-medium text-[#9aa0a6] mb-1 ml-1">Email address</label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               className="w-full bg-[#0e0e0e] border border-[#3c4043] text-white rounded-lg px-4 py-2.5 focus:border-[#8ab4f8] outline-none transition-colors placeholder:text-[#3c4043]"
               placeholder="email@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
@@ -32,17 +60,22 @@ const SignInPage = () => {
                 Forgot password?
               </Link>
             </div>
-            
+
+            {/* Wrapper div must be 'relative' to position the eye icon inside */}
             <div className="relative">
-              <input 
-                type={showPassword ? "text" : "password"} 
+              <input
+                // Toggle type between 'password' and 'text'
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full bg-[#0e0e0e] border border-[#3c4043] text-white rounded-lg px-4 py-2.5 focus:border-[#8ab4f8] outline-none transition-colors placeholder:text-[#3c4043] pr-12"
                 placeholder="••••••••"
               />
-              
-              <button 
-                type="button" 
-                onClick={() => setShowPassword(!showPassword)}
+
+              {/* The Eye Button */}
+              <button
+                type="button" // Important: set to button so it doesn't submit the form
+                onClick={() => setShowPassword(!showPassword)} // Toggle state
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9aa0a6] hover:text-[#e3e3e3] transition-colors"
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
