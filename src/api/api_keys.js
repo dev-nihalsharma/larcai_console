@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8000/v1';
+const BASE_URL = `${import.meta.env.VITE_API_HOST || 'http://localhost:8000'}/v1`;
 
 export async function get_api_keys() {
   const token = localStorage.getItem('access');
