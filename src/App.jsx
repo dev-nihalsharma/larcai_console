@@ -18,8 +18,6 @@ function App() {
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
   const isAuth = isAuthenticated();
 
-
-
   return (
     <div className='flex h-screen w-full overflow-hidden bg-black text-white font-sans'>
       {isAuth ? (
@@ -28,25 +26,25 @@ function App() {
 
       <div className='flex-1 flex flex-col min-w-0 overflow-auto bg-[#0e0e0e]'>
         <Routes>
-          {!isAuth ?
-          <>
-          <Route path='/signin' element={<SignInPage />} />
-          <Route path='/signup' element={<SignUpPage />} />
-          <Route path='*' element={<Navigate to='/signin' />} />
-          <Route path='/documentations' element={<DocumentationView />} />
-          </>
-          : 
-          <>
-          <Route path='/api-keys' element={<APIKeysView />} />
-          <Route path='/billing' element={<BillingView />} />
-          {/* Settings Menu Routes */}
-          <Route path='/terms' element={<TermsOfServicePage />} />
-          <Route path='/privacy' element={<PrivacyPolicyPage />} />
-          <Route path='/billing-support' element={<BillingSupportPage />} />
-          <Route path='*' element={<Navigate to='/documentations' />} />
-          </>
-          }
-          
+          {!isAuth ? (
+            <>
+              <Route path='/signin' element={<SignInPage />} />
+              <Route path='/signup' element={<SignUpPage />} />
+              <Route path='*' element={<Navigate to='/signin' />} />
+              <Route path='/documentations' element={<DocumentationView />} />
+            </>
+          ) : (
+            <>
+              <Route path='/api-keys' element={<APIKeysView />} />
+              <Route path='/billing' element={<BillingView />} />
+              {/* Settings Menu Routes */}
+              <Route path='/terms' element={<TermsOfServicePage />} />
+              <Route path='/privacy' element={<PrivacyPolicyPage />} />
+              <Route path='/billing-support' element={<BillingSupportPage />} />
+              <Route path='*' element={<Navigate to='/documentations' />} />
+              <Route path='/documentations' element={<DocumentationView />} />
+            </>
+          )}
         </Routes>
       </div>
     </div>

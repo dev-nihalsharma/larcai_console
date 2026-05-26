@@ -1,5 +1,9 @@
-const BASE_URL = `${import.meta.env.VITE_API_HOST || 'http://localhost:8000'}/v1`;
-
+var BASE_URL = '';
+if (import.meta.env.VITE_DEBUG == 'True') {
+  BASE_URL = `${import.meta.env.VITE_API_HOST || 'http://localhost:8000'}/v1`;
+} else if (import.meta.env.VITE_DEBUG == 'False') {
+  BASE_URL = `/api`;
+}
 export async function usage_details() {
   const token = localStorage.getItem('access');
   if (!token) return null;
