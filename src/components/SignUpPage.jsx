@@ -27,16 +27,34 @@ const SignUpPage = () => {
       setError("Passwords do not match!");
       return;
     }
+    if(formData.password.length < 8) {
+      setError("Password must be at least 8 characters long!");
+      return;
+    }
+    if(formData.fullName.length < 3) {
+      setError("Full Name must be at least 3 characters long!");
+      return;
+    }
+    if(!formData.email.includes('@')) {
+      setError("Invalid email address!");
+      return;
+    }
     try{
       const res = await signup({
         fullName: formData.fullName,
         email:formData.email,
         password:formData.password
       })
-      console.log("signup success",res);
-      window.location.href="/signin";
+      if (res.error) {
+        setError(res.message || "Failed To Sign Up");
+        return;
+      } else {
+        localStorage.setItem('access', res.access);
+        localStorage.setItem('refresh', res.refresh);
+        window.location.href = '/';
+      }
     }catch(e){
-      setError(e.error||"failed");
+      setError(e.error||"Failed To Sign Up");
     }
   };
 
@@ -118,8 +136,8 @@ const SignUpPage = () => {
               </button>
             </div>
             {/* Error Message */}
-            {error && <p className="text-red-500 text-[11px] mt-1 ml-1 animate-pulse">{error}</p>}
           </div>
+            {error && <p className="text-red-500 text-[14px] mt-1 ml-1 ">{error}</p>}
 
           <button className="w-full mt-4 py-2.5 bg-[#8ab4f8] hover:bg-[#aecbfa] text-[#0e0e0e] font-bold rounded-lg transition-colors shadow-lg">
             Create account
