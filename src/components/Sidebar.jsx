@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { getUserFromToken } from '../utils/user';
 import { isAuthenticated, logout } from '../utils/auth';
-import { useNavigate } from 'react-router-dom';
+
 import logo from '../../assets/images/logo.png';
 
 const user = getUserFromToken();
@@ -24,7 +24,7 @@ const loggedIn = isAuthenticated();
 
 // Removed onSignInClick from props as we are now using a direct link
 const Sidebar = ({ isCollapsed, toggleSidebar }) => {
-  const navigate = useNavigate();
+
 
   const navItems = [
     { name: 'API keys', path: '/api-keys', icon: <Key size={20} /> },
@@ -140,7 +140,8 @@ const Sidebar = ({ isCollapsed, toggleSidebar }) => {
                   <button
                     onClick={() => {
                       logout();
-                      window.location.reload();
+                      window.location.href = '/signin';
+                      
                     }}
                     className='flex-shrink-0 p-1.5 rounded-md text-[#9aa0a6] hover:text-red-400 hover:bg-[#2a2a2a] transition-all duration-200 opacity-0 group-hover:opacity-100'
                     title='Logout'

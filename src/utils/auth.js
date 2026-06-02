@@ -5,6 +5,5 @@ export function isAuthenticated() {
 export function logout() {
   localStorage.removeItem("access");
   localStorage.removeItem("refresh");
-
-  window.location.href = "/signin";
+  return true;
 }

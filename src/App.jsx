@@ -28,10 +28,9 @@ function App() {
         <Routes>
           {!isAuth ? (
             <>
+              <Route path='*' element={<Navigate to='/signin' />} />
               <Route path='/signin' element={<SignInPage />} />
               <Route path='/signup' element={<SignUpPage />} />
-              <Route path='*' element={<Navigate to='/signin' />} />
-              <Route path='/documentations' element={<DocumentationView />} />
             </>
           ) : (
             <>
