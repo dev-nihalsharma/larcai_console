@@ -140,8 +140,8 @@ const Sidebar = ({ isCollapsed, toggleSidebar }) => {
                   <button
                     onClick={() => {
                       logout();
-                      window.location.href = '/signin';
-                      
+                      window.location.href = '/';
+
                     }}
                     className='flex-shrink-0 p-1.5 rounded-md text-[#9aa0a6] hover:text-red-400 hover:bg-[#2a2a2a] transition-all duration-200 opacity-0 group-hover:opacity-100'
                     title='Logout'
